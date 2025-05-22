@@ -1,24 +1,8 @@
-import image1 from "../assets/images/image1.png";
-import img4 from "../assets/images/img4.jpeg";
-import img3 from "../assets/images/img3.png";
+import useDashboardControl from "../hooks/useDashboardControl";
+
 const TeamMemberSection = () => {
-  const teamMembers = [
-    {
-      name: "Answar Uddin",
-      role: "Founder & CEO",
-      image: image1,
-    },
-    {
-      name: "Minhaj Ahammed",
-      role: "Web Designer",
-      image: img4,
-    },
-    {
-      name: "Md Abdullah Al Fahim",
-      role: "Web Developer",
-      image: img3,
-    },
-  ];
+  const { teamMembers } = useDashboardControl();
+
   return (
     <div>
       <div className="mx-20 my-10">
@@ -32,11 +16,11 @@ const TeamMemberSection = () => {
         </div>
 
         {/* Members Grid */}
-        <div className="flex lg:flex-row flex-col items-center justify-around">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 justify-items-center my-6">
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="flex flex-col h-[350px] bg-[#EAF9FF]  w-[300px] rounded my-6 shadow-md"
+              className="flex flex-col h-[350px] bg-[#EAF9FF]  w-[300px] rounded my-6 shadow-md hover:scale-110 hover:bg-white hover:shadow-md transition-transform duration-300"
             >
               <div className="h-[200px] shadow-sm">
                 <img

@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaBars, FaMagnifyingGlass } from "react-icons/fa6";
 import { FaTimes } from "react-icons/fa";
 import logoImg from "../assets/images/fav.png";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
+import toast from "react-hot-toast";
+import useAdmin from "../hooks/useAdmin";
 const Navbar = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const { isAdmin } = useAdmin();
+  console.log(isAdmin);
 
+  const { user, logOut } = useContext(AuthContext);
   const toggleDrawer = () => setDrawerOpen(!isDrawerOpen);
+  const handleLogout = async () => {
+    await logOut()
+      .then(() => {
+        console.log("Logout Successfull");
+        toast.success("Logout Successfull");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        toast.error(err.message);
+      });
+  };
   return (
     <div>
       <div className="sticky top-0 z-20 bg-transparent">
@@ -106,15 +123,41 @@ const Navbar = () => {
                   Contact
                 </a>
               </li>
+              {isAdmin && (
+                <li>
+                  <a href="/dashboard" className="hover:text-[#00A3F7]">
+                    Dashboard
+                  </a>
+                  
+                </li> 
+              )}
+             {isAdmin && <li> role:  Admin</li>}
             </ul>
           </div>
 
           {/* Search + CTA button */}
           <div className="flex gap-4 items-center">
             <FaMagnifyingGlass className="text-[#00A3F7]" />
-            <button className="py-2 px-6 rounded bg-[#00A3F7] text-white">
-              Lets Talk us
-            </button>
+
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="py-2 px-6 rounded bg-[#00A3F7] text-white"
+              >
+                <Link>Log Out</Link>
+              </button>
+            ) : (
+              <button className="py-2 px-6 rounded bg-[#00A3F7] text-white">
+                <Link to="/login">Log in</Link>
+              </button>
+            )}
+            {user && (
+              <div className="avatar">
+                <div className="mask mask-squircle h-10 w-10">
+                  <img src={user?.photoURL} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
